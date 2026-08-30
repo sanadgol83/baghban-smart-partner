@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as SmartRouteImport } from './routes/smart'
 import { Route as SmartIndexRouteImport } from './routes/smart.index'
 import { Route as SmartFarmersIndexRouteImport } from './routes/smart.farmers.index'
+import { Route as SmartFarmersFarmerIdRouteImport } from './routes/smart.farmers.$farmerId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -34,16 +35,23 @@ const SmartFarmersIndexRoute = SmartFarmersIndexRouteImport.update({
   path: '/farmers/',
   getParentRoute: () => SmartRoute,
 } as any)
+const SmartFarmersFarmerIdRoute = SmartFarmersFarmerIdRouteImport.update({
+  id: '/farmers/$farmerId',
+  path: '/farmers/$farmerId',
+  getParentRoute: () => SmartRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/smart': typeof SmartRouteWithChildren
   '/smart/': typeof SmartIndexRoute
+  '/smart/farmers/$farmerId': typeof SmartFarmersFarmerIdRoute
   '/smart/farmers/': typeof SmartFarmersIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/smart': typeof SmartIndexRoute
+  '/smart/farmers/$farmerId': typeof SmartFarmersFarmerIdRoute
   '/smart/farmers': typeof SmartFarmersIndexRoute
 }
 export interface FileRoutesById {
@@ -51,14 +59,22 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/smart': typeof SmartRouteWithChildren
   '/smart/': typeof SmartIndexRoute
+  '/smart/farmers/$farmerId': typeof SmartFarmersFarmerIdRoute
   '/smart/farmers/': typeof SmartFarmersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/smart' | '/smart/' | '/smart/farmers/'
+  fullPaths:
+    '/' | '/smart' | '/smart/' | '/smart/farmers/$farmerId' | '/smart/farmers/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/smart' | '/smart/farmers'
-  id: '__root__' | '/' | '/smart' | '/smart/' | '/smart/farmers/'
+  to: '/' | '/smart' | '/smart/farmers/$farmerId' | '/smart/farmers'
+  id:
+    | '__root__'
+    | '/'
+    | '/smart'
+    | '/smart/'
+    | '/smart/farmers/$farmerId'
+    | '/smart/farmers/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -96,16 +112,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SmartFarmersIndexRouteImport
       parentRoute: typeof SmartRoute
     }
+    '/smart/farmers/$farmerId': {
+      id: '/smart/farmers/$farmerId'
+      path: '/farmers/$farmerId'
+      fullPath: '/smart/farmers/$farmerId'
+      preLoaderRoute: typeof SmartFarmersFarmerIdRouteImport
+      parentRoute: typeof SmartRoute
+    }
   }
 }
 
 interface SmartRouteChildren {
   SmartIndexRoute: typeof SmartIndexRoute
+  SmartFarmersFarmerIdRoute: typeof SmartFarmersFarmerIdRoute
   SmartFarmersIndexRoute: typeof SmartFarmersIndexRoute
 }
 
 const SmartRouteChildren: SmartRouteChildren = {
   SmartIndexRoute: SmartIndexRoute,
+  SmartFarmersFarmerIdRoute: SmartFarmersFarmerIdRoute,
   SmartFarmersIndexRoute: SmartFarmersIndexRoute,
 }
 
