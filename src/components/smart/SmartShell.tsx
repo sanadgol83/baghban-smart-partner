@@ -191,7 +191,7 @@ export function SmartShell({ children }: { children: ReactNode }) {
             to={i.to}
             className="flex flex-1 flex-col items-center gap-1 rounded-xl py-1.5 text-[11px] text-muted-foreground"
             activeProps={{ className: "text-primary font-semibold" }}
-            activeOptions={{ exact: i.exact }}
+            activeOptions={{ exact: i.exact === true }}
           >
             <i.icon className="size-4" />
             {i.label}
