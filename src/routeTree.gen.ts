@@ -10,33 +10,76 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SmartRouteImport } from './routes/smart'
+import { Route as SmartIndexRouteImport } from './routes/smart.index'
+import { Route as SmartFarmersIndexRouteImport } from './routes/smart.farmers.index'
+import { Route as SmartFarmersFarmerIdRouteImport } from './routes/smart.farmers.$farmerId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SmartRoute = SmartRouteImport.update({
+  id: '/smart',
+  path: '/smart',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SmartIndexRoute = SmartIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SmartRoute,
+} as any)
+const SmartFarmersIndexRoute = SmartFarmersIndexRouteImport.update({
+  id: '/farmers/',
+  path: '/farmers/',
+  getParentRoute: () => SmartRoute,
+} as any)
+const SmartFarmersFarmerIdRoute = SmartFarmersFarmerIdRouteImport.update({
+  id: '/farmers/$farmerId',
+  path: '/farmers/$farmerId',
+  getParentRoute: () => SmartRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/smart': typeof SmartRouteWithChildren
+  '/smart/': typeof SmartIndexRoute
+  '/smart/farmers/$farmerId': typeof SmartFarmersFarmerIdRoute
+  '/smart/farmers/': typeof SmartFarmersIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/smart': typeof SmartIndexRoute
+  '/smart/farmers/$farmerId': typeof SmartFarmersFarmerIdRoute
+  '/smart/farmers': typeof SmartFarmersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/smart': typeof SmartRouteWithChildren
+  '/smart/': typeof SmartIndexRoute
+  '/smart/farmers/$farmerId': typeof SmartFarmersFarmerIdRoute
+  '/smart/farmers/': typeof SmartFarmersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    '/' | '/smart' | '/smart/' | '/smart/farmers/$farmerId' | '/smart/farmers/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/smart' | '/smart/farmers/$farmerId' | '/smart/farmers'
+  id:
+    | '__root__'
+    | '/'
+    | '/smart'
+    | '/smart/'
+    | '/smart/farmers/$farmerId'
+    | '/smart/farmers/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  SmartRoute: typeof SmartRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +91,54 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/smart': {
+      id: '/smart'
+      path: '/smart'
+      fullPath: '/smart'
+      preLoaderRoute: typeof SmartRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/smart/': {
+      id: '/smart/'
+      path: '/'
+      fullPath: '/smart/'
+      preLoaderRoute: typeof SmartIndexRouteImport
+      parentRoute: typeof SmartRoute
+    }
+    '/smart/farmers/': {
+      id: '/smart/farmers/'
+      path: '/farmers'
+      fullPath: '/smart/farmers/'
+      preLoaderRoute: typeof SmartFarmersIndexRouteImport
+      parentRoute: typeof SmartRoute
+    }
+    '/smart/farmers/$farmerId': {
+      id: '/smart/farmers/$farmerId'
+      path: '/farmers/$farmerId'
+      fullPath: '/smart/farmers/$farmerId'
+      preLoaderRoute: typeof SmartFarmersFarmerIdRouteImport
+      parentRoute: typeof SmartRoute
+    }
   }
 }
 
+interface SmartRouteChildren {
+  SmartIndexRoute: typeof SmartIndexRoute
+  SmartFarmersFarmerIdRoute: typeof SmartFarmersFarmerIdRoute
+  SmartFarmersIndexRoute: typeof SmartFarmersIndexRoute
+}
+
+const SmartRouteChildren: SmartRouteChildren = {
+  SmartIndexRoute: SmartIndexRoute,
+  SmartFarmersFarmerIdRoute: SmartFarmersFarmerIdRoute,
+  SmartFarmersIndexRoute: SmartFarmersIndexRoute,
+}
+
+const SmartRouteWithChildren = SmartRoute._addFileChildren(SmartRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  SmartRoute: SmartRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
