@@ -23,7 +23,14 @@ import { NotificationsPanel } from "@/components/glass/NotificationsPanel";
 import { UserPopover } from "@/components/glass/UserPopover";
 import { cn } from "@/lib/utils";
 
-const NAV = [
+type NavItem = {
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
+  to?: string;
+  exact?: boolean;
+};
+
+const NAV: NavItem[] = [
   { label: "داشبورد", icon: LayoutDashboard, to: "/smart", exact: true },
   { label: "کشاورزان", icon: Users, to: "/smart/farmers" },
   { label: "باغ‌ها و مزارع", icon: Trees, to: "/smart/farmers/1" },
@@ -183,15 +190,15 @@ export function SmartShell({ children }: { children: ReactNode }) {
       <nav className="glass-panel fixed inset-x-3 bottom-3 z-30 flex items-center justify-around rounded-2xl px-2 py-2 lg:hidden">
         {[
           { label: "داشبورد", icon: LayoutDashboard, to: "/smart", exact: true },
-          { label: "کشاورزان", icon: Users, to: "/smart/farmers" },
-          { label: "باغ‌ها", icon: Trees, to: "/smart/farmers/1" },
+          { label: "کشاورزان", icon: Users, to: "/smart/farmers", exact: false },
+          { label: "باغ‌ها", icon: Trees, to: "/smart/farmers/1", exact: false },
         ].map((i) => (
           <Link
             key={i.label}
             to={i.to}
             className="flex flex-1 flex-col items-center gap-1 rounded-xl py-1.5 text-[11px] text-muted-foreground"
             activeProps={{ className: "text-primary font-semibold" }}
-            activeOptions={{ exact: i.exact === true }}
+            activeOptions={{ exact: i.exact }}
           >
             <i.icon className="size-4" />
             {i.label}
