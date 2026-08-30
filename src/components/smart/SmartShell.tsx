@@ -33,7 +33,7 @@ type NavItem = {
 const NAV: NavItem[] = [
   { label: "داشبورد", icon: LayoutDashboard, to: "/smart", exact: true },
   { label: "کشاورزان", icon: Users, to: "/smart/farmers" },
-  { label: "باغ‌ها و مزارع", icon: Trees, to: "/smart/farmers/1" },
+  { label: "باغ‌ها و مزارع", icon: Trees, to: "/smart/farmers/1", exact: true },
   { label: "توصیه‌های هوشمند", icon: Sparkles },
   { label: "آب‌وهوا", icon: CloudSun },
   { label: "آزمایش‌ها", icon: FlaskConical },
