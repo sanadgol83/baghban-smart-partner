@@ -125,7 +125,7 @@ function SmartDashboard() {
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {dashboardStats.map((s, i) => {
-          const Icon = STAT_ICONS[i];
+          const Icon = STAT_ICONS[i]!;
           const isAlert = s.key === "alerts";
           return (
             <div key={s.key} className="surface-card hover-lift rounded-2xl p-5">

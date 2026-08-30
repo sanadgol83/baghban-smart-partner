@@ -169,7 +169,7 @@ function Home() {
         />
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {problems.map((p, i) => {
-            const Icon = PROBLEM_ICONS[i];
+            const Icon = PROBLEM_ICONS[i]!;
             const active = activeProblem === p.key;
             return (
               <button
@@ -253,7 +253,7 @@ function Home() {
             <div className="surface-card overflow-hidden rounded-3xl p-4 sm:p-5">
               <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
                 {dashboardStats.map((s, i) => {
-                  const Icon = STAT_ICONS[i];
+                  const Icon = STAT_ICONS[i]!;
                   return (
                     <div key={s.key} className="rounded-2xl border border-border bg-muted/40 p-3.5">
                       <Icon className="size-4 text-primary" />
@@ -370,7 +370,7 @@ function Home() {
           />
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {services.map((s, i) => {
-              const Icon = SERVICE_ICONS[i];
+              const Icon = SERVICE_ICONS[i]!;
               return (
                 <article key={s.title} className="surface-card hover-lift rounded-2xl p-6">
                   <span className="grid size-11 place-items-center rounded-2xl bg-secondary text-primary">
